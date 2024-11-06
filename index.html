@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chest Cancer Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #output {
+            margin-top: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chest Cancer Detection</h1>
+    <div class="container">
+        <form id="uploadForm" enctype="multipart/form-data">
+            <label for="imageUpload">Upload a Chest Scan Image:</label><br><br>
+            <input type="file" id="imageUpload" name="image" accept="image/*" required><br><br>
+            <button type="submit">Predict</button>
+        </form>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').onsubmit = async function (event) {
+            event.preventDefault();
+            const output = document.getElementById('output');
+            output.innerHTML = "Processing...";
+
+            const formData = new FormData(this);
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                output.innerHTML = "Prediction: " + result.message;
+            } catch (error) {
+                output.innerHTML = "Error in prediction. Please try again.";
+            }
+        }
+    </script>
+</body>
+</html>
