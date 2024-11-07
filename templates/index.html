@@ -3,10 +3,24 @@
 <head>
     <title>Chest Cancer Detection</title>
     <style>
+        * {
+            color: black;
+        }
+        .project-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
+            /* Use Flask's static URL for the background image */
+            background-image: url('/static/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
         }
         #output {
             margin-top: 20px;
@@ -18,10 +32,23 @@
             border: 1px solid #ddd;
             border-radius: 10px;
         }
+        .collab {
+            color: blue;
+        }
+        .project-info {
+            color: brown;
+        }
     </style>
 </head>
 <body>
-    <h1>Chest Cancer Detection</h1>
+    <h1 class="Head">Chest Cancer Detection</h1>
+    <span class="collab">
+        <h3></h3>
+    </span>
+    <div class="project-info">
+        <h4>Mini project</h4>
+        <h4>Made by: A3</h4>
+    </div>
     <div class="container">
         <form id="uploadForm" enctype="multipart/form-data">
             <label for="imageUpload">Upload a Chest Scan Image:</label><br><br>

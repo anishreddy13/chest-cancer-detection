@@ -5,7 +5,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 
 # Initialize the Flask app
-app = Flask(__name__, template_folder='.')  # Use the current directory for templates
+app = Flask(__name__, template_folder='templates', static_folder='static')  # Updated static_folder
 
 # Load your trained machine learning model
 model = load_model('chest_cancer_model.h5')  # Updated with the correct path
@@ -26,7 +26,7 @@ def predict_image(img_path):
 # Route to render the HTML page
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html')  # This will look for index.html in the 'templates' folder
 
 # Route to handle image upload and prediction
 @app.route('/predict', methods=['POST'])
@@ -52,5 +52,5 @@ def predict():
     return jsonify({'message': result})
 
 # Run the app
-if __name__== '__main__':
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True, port=5001)
