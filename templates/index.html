@@ -1,81 +1,724 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Chest Cancer Detection</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Lung Cancer Screening</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/> 
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Basic Resets */
         * {
-            color: black;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .project-info {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
+
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-            /* Use Flask's static URL for the background image */
-            background-image: url('/static/background.jpg');
+            font-family: 'Open Sans', sans-serif; 
+            line-height: 1.6;
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        a {
+            color: #4CAF50; 
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Roboto', sans-serif; 
+            font-weight: 700; 
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        /* Layout and Structure */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: #fff;
+            padding: 1rem 0;
+            border-bottom: 1px solid #ddd; 
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .logo a {
+            color: #333; 
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav li {
+            display: inline-block;
+            margin-left: 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80'); 
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
-            color: white;
+            text-align: center;
+            padding: 100px 0;
+            color: #fff;
+            position: relative; /* For positioning the overlay */
         }
-        #output {
-            margin-top: 20px;
+
+        .hero::before { 
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); 
         }
-        .container {
-            max-width: 500px;
-            margin: auto;
+
+        .hero-content { 
+            position: relative; 
+            z-index: 2; 
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background-color: #007bff; 
+        }
+
+        .btn-secondary {
+            background-color: #6c757d; 
+        }
+
+        /* Features Section */
+        .features {
+            padding: 50px 0;
+            background-image: url('https://images.unsplash.com/photo-1518152006812-edab29b069ac?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80'); /* Added background image */
+            background-size: cover;
+            background-position: center;
+            color: #fff; /* Text color for better readability */
+            position: relative;
+        }
+
+        .features::before { 
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            grid-gap: 20px;
+            position: relative; /* Ensure content is above overlay */
+            z-index: 2; 
+        }
+
+        .feature-item {
+            text-align: center;
             padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Semi-transparent border */
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background-color: rgba(255, 255, 255, 0.1); /* Subtle background for the items */
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #4CAF50; 
+        }
+
+        /* About Section */
+        .about {
+            background-color: #f9f9f9; 
+            padding: 50px 0;
+            background-image: url('https://images.unsplash.com/photo-1588392382834-a891154bca4d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80'); /* Added background image */
+            background-size: cover;
+            background-position: center;
+            color: #fff; /* White text for better readability */
+            position: relative;
+        }
+
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); 
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap; 
+            justify-content: space-around;
+            align-items: center;
+            position: relative;
+            z-index: 2; 
+        }
+
+        .about-text {
+            flex: 1; 
+            padding: 20px;
+            margin: 0 20px; 
+        }
+
+        .about-image {
+            flex: 1; 
+            max-width: 500px; 
+            margin: 20px;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Steps Section */
+        .steps {
+            padding: 50px 0;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            grid-gap: 30px;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4CAF50; 
+            margin-bottom: 1rem;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            background-color: #f9f9f9; 
+            padding: 50px 0;
+        }
+
+        .testimonial-slider {
+            /* Add your slider styles here (e.g., using Swiper.js) */
+        }
+
+        .testimonial {
+            text-align: center;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+        }
+
+        /* Call to Action Section */
+        .cta {
+            background-color: #4CAF50; 
+            color: #fff;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .cta h2 {
+            margin-bottom: 1rem;
+        }
+
+        /* Upload Section */
+        .upload {
+            padding: 50px 0;
+            background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80'); /* Added background image */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            position: relative;
+        }
+
+        .upload::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); 
+        }
+
+        .upload-content {
+            background-color: rgba(255, 255, 255, 0.1); 
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .upload-content h2 {
+            margin-bottom: 2rem;
+        }
+
+        #uploadForm input[type="file"] {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 10px;
+            border-radius: 5px;
         }
-        .collab {
-            color: blue;
+
+        /* FAQ Section */
+        .faq {
+            padding: 50px 0;
+            background-image: url('https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80'); /* Added background image */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            position: relative;
         }
-        .project-info {
-            color: brown;
+
+        .faq::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); 
+        }
+
+        .faq-content {
+            background-color: rgba(255, 255, 255, 0.1); 
+            padding: 30px;
+            border-radius: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .faq-content h2 {
+            margin-bottom: 2rem;
+        }
+
+        .faq-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .faq-item {
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3); 
+            padding-bottom: 15px;
+        }
+
+        .faq-question {
+            font-weight: bold;
+            cursor: pointer; 
+            position: relative; 
+        }
+
+        .faq-question::after { 
+            content: '\f078'; 
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900; 
+            position: absolute;
+            right: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active::after {
+            transform: rotate(90deg);
+        }
+
+        .faq-answer {
+            max-height: 0; 
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            margin-top: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-links {
+            flex: 1;
+            margin: 10px;
+            text-align: center; 
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .social-media {
+            flex: 1;
+            margin: 10px;
+            text-align: center; 
+        }
+
+        .social-media a {
+            display: inline-block;
+            margin: 0 10px; 
+            font-size: 1.5rem;
+            color: #fff; 
+        }
+
+        /* Credits Section */
+        .credits {
+            text-align: center;
+            padding: 10px 0;
+            font-size: 0.8rem;
+            color: #666; 
+        }
+
+        /* Responsive Design (Basic) */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .features-grid,
+            .steps-grid {
+                grid-template-columns: 1fr; 
+            }
+
+            .about-content {
+                flex-direction: column; 
+            }
+
+            .about-image {
+                margin: 20px 0; 
+            }
         }
     </style>
 </head>
 <body>
-    <h1 class="Head">Chest Cancer Detection</h1>
-    <span class="collab">
-        <h3></h3>
-    </span>
-    <div class="project-info">
-        <h4>Mini project</h4>
-        <h4>Made by: A3</h4>
+
+    <header>
+        <div class="container header-content"><div class="logo">
+            <a href="#">AayushAI</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#upload">Upload</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </nav>
     </div>
+</header>
+
+<section class="hero">
+    <div class="hero-content"> 
+        <h1>Early Detection of Lung Cancer</h1>
+        <p>Empowering Patients with AI-Driven Screening</p>
+        <a href="#upload" class="btn btn-primary">Get Started</a>
+    </div>
+</section>
+
+<section class="features" id="features">
     <div class="container">
+        <h2>Key Features</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <i class="fas fa-brain feature-icon"></i> 
+                <h3>AI-Powered Analysis</h3>
+                <p>Our advanced AI algorithms analyze your CT scans with high accuracy, aiding in the early detection of adenocarcinoma.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-clock feature-icon"></i> 
+                <h3>Fast Results</h3>
+                <p>Get quick and efficient results, saving you valuable time and reducing anxiety.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-user-md feature-icon"></i>
+                <h3>Doctor Collaboration</h3>
+                <p>This tool is designed to assist healthcare professionals in their diagnosis, enhancing their workflow and patient care.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-shield-alt feature-icon"></i>
+                <h3>Data Privacy</h3>
+                <p>Your data is handled with the utmost security and privacy. No personal or medical information is stored after the analysis.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about" id="about">
+    <div class="container about-content">
+        <div class="about-text">
+            <h2>About AayushAI</h2>
+            <p>AayushAI is an innovative platform developed by Pagadala Vivek (21R91A7348), Kunta Varun Goud (21R91A7325), and Arshanapally Manideep (21R91A7303) from the A3 batch of section AIML, fourth year, Teegala Krishna Reddy Engineering College, under the guidance of Dr. P. Jyothi, Assistant Professor. The name AayushAI is inspired by the Sanskrit word Aayush, meaning "life" or "longevity," symbolizing the platform's goal to enhance health outcomes through artificial intelligence. Just as life depends on breathing, with lungs as essential organs, this AI tool aims to extend patients' lives by detecting cancerous tumors early in CT scans, thus improving the chance for timely intervention and increasing the "Aayush" (life span) of patients. AayushAI leverages deep learning to analyze chest CT scans, providing rapid and accurate assessments for the early detection of adenocarcinoma, a type of lung cancer. Our mission is to empower patients and healthcare providers with advanced technology to aid in early diagnosis, ultimately improving survival rates. While AayushAI supports the diagnostic process, it is not a substitute for professional medical advice, and patients should always consult their healthcare providers for a complete diagnosis and treatment plan.</p>
+        </div>
+        <div class="about-image">
+            <img src="https://images.unsplash.com/photo-1618498082410-b4aa22193b38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" alt="About LungVision AI"> 
+        </div>
+    </div>
+</section>
+
+<section class="steps">
+    <div class="container">
+        <h2>How It Works</h2>
+        <div class="steps-grid">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Upload Your CT Scan</h3>
+                <p>Securely upload your chest CT scan images to our platform.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>AI Analysis</h3>
+                <p>Our AI algorithms analyze your scan for signs of adenocarcinoma.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Receive Results</h3>
+                <p>Get your results quickly and discuss them with your healthcare provider.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials">
+    <div class="container">
+        <h2>Testimonials</h2>
+        <div class="swiper testimonial-slider">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide testimonial">
+                    <p class="testimonial-text">"AayushAI AI has been a game-changer in my practice. The speed and accuracy of the analysis are incredible, allowing me to provide timely and informed care to my patients."</p>
+                    <p class="testimonial-author">- Dr. Anish Reddy, Pulmonologist</p>
+                </div>
+                <div class="swiper-slide testimonial">
+                    <p class="testimonial-text">"I was so relieved to have access to AayushAI. The quick results helped ease my anxiety, and my doctor was able to address my concerns promptly."</p>
+                    <p class="testimonial-author">- Rounak Reddy(cseb) - Patient</p>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div> 
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="container">
+        <h2>Take Control of Your Lung Health</h2>
+        <p>Early detection can save lives. Upload your CT scan today.</p>
+        <a href="#upload" class="btn btn-secondary">Get Started Now</a>
+    </div>
+</section>
+
+<section class="upload" id="upload">
+    <div class="container upload-content">
+        <h2>Upload Your CT Scan</h2>
         <form id="uploadForm" enctype="multipart/form-data">
-            <label for="imageUpload">Upload a Chest Scan Image:</label><br><br>
-            <input type="file" id="imageUpload" name="image" accept="image/*" required><br><br>
-            <button type="submit">Predict</button>
+            <input type="file" id="imageUpload" name="image" accept="image/*" required>
+            <button class="btn btn-primary" type="submit">Predict</button>
         </form>
         <div id="output"></div>
     </div>
+</section>
 
-    <script>
-        document.getElementById('uploadForm').onsubmit = async function (event) {
-            event.preventDefault();
-            const output = document.getElementById('output');
-            output.innerHTML = "Processing...";
+<section class="faq" id="faq">
+    <div class="container faq-content">
+        <h2>Frequently Asked Questions</h2>
+        <ul class="faq-list">
+            <li class="faq-item">
+                <h3 class="faq-question">Can this tool replace a medical diagnosis?</h3>
+                <div class="faq-answer">
+                    <p>No, this tool is intended for educational and preliminary assessment purposes. It is essential to consult with a qualified healthcare professional for a complete diagnosis and treatment plan.</p>
+                </div>
+            </li>
+            <li class="faq-item">
+                <h3 class="faq-question">What should I do if my scan is classified as potentially cancerous?</h3>
+                <div class="faq-answer">
+                    <p>If the analysis indicates a potential concern, it is crucial to schedule an appointment with your doctor or a lung specialist immediately. They will conduct further tests and examinations to confirm the diagnosis and determine the best course of action.</p>
+                </div>
+            </li>
+            <li class="faq-item">
+                <h3 class="faq-question">What types of CT scans are compatible with this tool?</h3>
+                <div class="faq-answer">
+                    <p>This tool is designed to analyze standard chest CT scans. If you have any questions about the compatibility of your specific scan, please consult with our support team or your healthcare provider.</p>
+                </div>
+            </li>
+            <li class="faq-item">
+                <h3 class="faq-question">How accurate is the AI analysis?</h3>
+                <div class="faq-answer">
+                    <p>Our AI model has been trained on a large dataset of CT scans and has demonstrated high accuracy in detecting adenocarcinoma. However, it's important to remember that no AI system is perfect. Always consult with your doctor for a definitive diagnosis.</p>
+                </div>
+            </li>
+            <li class="faq-item">
+                <h3 class="faq-question">Is my data secure?</h3>
+                <div class="faq-answer">
+                    <p>Yes, your data privacy is our top priority. We use secure servers and encryption to protect your information.  No personal or medical data is stored after the analysis is complete.</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
 
-            const formData = new FormData(this);
-            try {
-                const response = await fetch('/predict', {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await response.json();
-                output.innerHTML = "Prediction: " + result.message;
-            } catch (error) {
-                output.innerHTML = "Error in prediction. Please try again.";
-            }
+<footer>
+    <div class="container footer-content">
+        <div class="footer-links">
+            <ul>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></<li><a href="#">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="social-media">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+    <p>&copy; 2024 LungVision AI. All rights reserved.</p>
+</footer>
+
+<section class="credits">
+    <p>This mini-project was created by Batch A3: Vivek, Manideep, Varun.</p>
+</section>
+
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script>
+    // Form Submission (Unchanged)
+    document.getElementById('uploadForm').onsubmit = async function(event) {
+        event.preventDefault();
+        const output = document.getElementById('output');
+        output.innerHTML = "Processing...";
+
+        const formData = new FormData(this);
+        try {
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            output.innerHTML = "Prediction: " + result.message;
+        } catch (error) {
+            output.innerHTML = "Error in prediction. Please try again.";
         }
-    </script>
+    }
+
+    // FAQ Accordion Functionality
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            question.classList.toggle('active');
+            const answer = question.nextElementSibling;
+            if (question.classList.contains('active')) {
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            } else {
+                answer.style.maxHeight = 0;
+            }
+        });
+    });
+
+    // Initialize Swiper.js
+    const swiper = new Swiper('.testimonial-slider', {
+        loop: true, 
+        autoplay: {
+            delay: 3000, 
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+    });
+</script>
 </body>
 </html>
