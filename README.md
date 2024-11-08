@@ -15,7 +15,19 @@ AayushAI is an AI-powered web application designed to assist in the early detect
 *   Prioritizes data security and privacy.
 
 **How to Use:**
-
+ **Download the Dataset:**
+   * Download the dataset from [Google Drive Link](https://drive.google.com/drive/folders/1Dj3Hd_NsTJ6IlxNuhIiCWSY33dkQLaNa?usp=sharing) or [Alternative Download Link (if applicable)].
+   * Extract the dataset to a directory of your choice.
+**Update Dataset Path:**
+   * Open the `model_training.py` file (if provided).
+   * Modify the `directory` path in the `ImageDataGenerator` to point to the location where you extracted the dataset. For example:
+     ```python
+     train_data = data_gen.flow_from_directory(
+         directory=r"C:\path\to\your\dataset", 
+         # ... rest of your code
+     )
+     ```
+     
 1.  **Clone the repository:** `https://github.com/anishreddy13/chest-cancer-detection.git`
 2.  **Navigate to the project directory:
 3.  **Run the Flask application:** `python app.py`
